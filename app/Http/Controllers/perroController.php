@@ -20,17 +20,17 @@ class perroController extends Controller
         return $this->tinderRepo->guardarPerro($request);
     }
 
-    public function verPerro(PerroRequest $request)
+    public function verPerro(Request $request)
     {
         return $this->tinderRepo->verPerro($request);
     }
 
-    public function eliminarPerro(PerroRequest $request)
+    public function eliminarPerro(Request $request)
     {
         return $this->tinderRepo->eliminarPerro($request);
     }
 
-    public function actualizarPerro(PerroRequest $request)
+    public function actualizarPerro(Request $request)
     {
         return $this->tinderRepo->actualizarPerro($request);
     }
