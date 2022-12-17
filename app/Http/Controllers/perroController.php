@@ -33,6 +33,7 @@ class perroController extends Controller
     public function actualizarPerro(Request $request)
     {
         return $this->tinderRepo->actualizarPerro($request);
+        
     }
 
     public function guardarInteraccion(InteraccionRequest $request)
