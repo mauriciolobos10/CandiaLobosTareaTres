@@ -1,0 +1,111 @@
+<?php
+
+namespace App\Repositories;
+
+use Exception;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use App\Models\Perro;
+use App\Models\Interaccion;
+
+class TinderRepository
+{
+
+    public function guardarPerro($request)
+    {
+
+        $perros = Perro::create([
+            "nombre" => $request->nombre,
+            "url_foto" => $request->url_foto,
+            "descripcion" => $request->descripcion
+        ]);
+
+        return response()->json(["perros" => $perros], Response::HTTP_OK);
+    }
+
+    public function eliminarPerro($request)
+    {
+        try {
+            $perro = Perro::find($request->id);
+            if(!$perro){
+                throw new Exception("No se encuentra el perro");
+            }
+            $perro->delete();
+
+            return response()->json(["eliminados"=>"se elimino el perro"], Response::HTTP_OK);
+        } catch (Exception $e) {
+            return response()->json(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+    public function actualizarPerro($request)
+    {
+        try {
+
+
+            $perros = Perro::findorFail($request->id);
+            isset($request->nombre) && $perros->nombre = $request->nombre;
+            isset($request->url_foto) && $perros->url_foto = $request->url_foto;
+            isset($request->descripcion) && $perros->descripcion = $request->descripcion;
+            $perros->save();
+
+            // $perros = Perro::where('id', $request->id)
+            //     ->update([
+            //         'nombre' => $request->nombre,
+            //         'url_foto' => $request->url_foto,
+            //         'descripcion' => $request->descripcion
+            //     ]);
+
+
+            return response()->json(["perros" => $perros], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e,
+                "mensaje" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "archivo" => $e->getFile(),
+            ]);
+            return response()->json(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function verPerro($request)
+    {
+        try {
+
+        $perros = Perro::where('id', $request->id)->first();
+
+            if(!$perros){
+                throw new Exception("No se encuentra el perro");
+            }
+
+        return response()->json(["perros" => $perros], Response::HTTP_OK);
+        }catch (Exception $e) {
+            return response()->json(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function guardarInteraccion($request)
+    {
+        //valida que no exista la misma interaccion
+        $val = Interaccion::where('id_perro_interesado',$request->id_perro_interesado)->
+            where('id_perro_candidato',$request->id_perro_candidato)->first();
+        if($val){
+            return response()->json(["error" => "ya existe esta interaccion"], Response::HTTP_BAD_REQUEST);
+        }
+        $interaccion = Interaccion::create([
+            "preferencia" => $request->preferencia,
+            "id_perro_interesado" => $request->id_perro_interesado,
+            "id_perro_candidato" => $request->id_perro_candidato
+        ]);
+
+        return response()->json(["interaccion" => $interaccion], Response::HTTP_OK);
+    }
+
+
+    public function verInteresados($request)
+    {
+        $perros = Interaccion::where('id_perro_interesado', $request->id)->get();
+        return response()->json(["perros" => $perros], Response::HTTP_OK);
+    }
+    
+}
