@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
 
-        $perro = Perro::factory()->create();
+        $perro = Perro::factory()->count(100)->create();
 
-        $posts = Interaccion::factory()
-            ->count(10)
-            ->create();
+        // $posts = Interaccion::factory()
+        //     ->count(10)
+        //     ->create();
     }
 }

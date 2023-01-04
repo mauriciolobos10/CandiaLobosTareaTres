@@ -21,11 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('/tinder')->group(function () use ($router) {
     $router->post('/postPerro', [PerroController::class, 'guardarPerro']);
+    $router->get('/getPerroAzar', [PerroController::class, 'verPerroAzar']);
     $router->get('/getPerro', [PerroController::class, 'verPerro']);
     $router->post('/borrarPerro', [PerroController::class, 'eliminarPerro']);
     $router->post('/actualizarPerro', [PerroController::class, 'actualizarPerro']);
 
-    $router->get('/verInteresados', [PerroController::class, 'verInteresados']);
+    $router->post('/cambiarInteraccion', [PerroController::class, 'cambiarInteraccion']);
+
+    $router->get('/verInteresadosAceptados', [PerroController::class, 'verInteresadosAceptados']);
+    $router->get('/verInteresadosRechazados', [PerroController::class, 'verInteresadosRechazados']);
 
 
     $router->post('/postInteraccion', [PerroController::class, 'guardarInteraccion']);

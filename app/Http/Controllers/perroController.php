@@ -41,8 +41,19 @@ class perroController extends Controller
         return $this->tinderRepo->guardarInteraccion($request);
     }
 
-    public function verInteresados(Request $request)
+    public function verInteresadosAceptados(Request $request)
     {
-        return $this->tinderRepo->verInteresados($request);
+        return $this->tinderRepo->verInteresadosAceptados($request);
+    }
+    public function verInteresadosRechazados(Request $request)
+    {
+        return $this->tinderRepo->verInteresadosRechazados($request);
+    }
+
+    public function verPerroAzar(Request $request){
+        return $this->tinderRepo->verPerroAzar($request);
+    }
+    public function cambiarInteraccion(Request $request){
+        return $this->tinderRepo->cambiarInteraccion($request);
     }
 }
